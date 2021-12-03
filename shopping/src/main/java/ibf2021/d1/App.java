@@ -9,8 +9,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
-
         List<String> shoppingCart = new ArrayList<String>();
         System.out.println("Welcome to your shopping cart");
 
@@ -45,10 +43,14 @@ public class App
 
             } else if (userInput.startsWith("delete")) {
                 String[] items = userInput.split(" ");
-                int itemIndex = Integer.parseInt(items[1]) - 1;
-                System.out.println(shoppingCart.get(itemIndex) + " removed from cart");
-                shoppingCart.remove(itemIndex);
-
+                int deleteIndex = Integer.parseInt(items[1]) - 1;
+                System.out.println(shoppingCart.size());
+                if (deleteIndex < 0 || deleteIndex >= shoppingCart.size()) {
+                    System.out.println("Incorrect item index");
+                } else {
+                    System.out.println(shoppingCart.get(deleteIndex) + " removed from cart");
+                    shoppingCart.remove(deleteIndex);
+                }
 
             } else if (userInput.startsWith("exit")) {
                 exit = true;
