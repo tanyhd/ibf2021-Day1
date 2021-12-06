@@ -28,8 +28,8 @@ public class App
                     }
                 }
             } else if (userInput.startsWith("add")) {
-                String str = userInput.substring(4, userInput.length());
-                String[] items = str.split(", ");
+                String str = userInput.substring(3, userInput.length());
+                String[] items = str.trim().split(", ");
 
                 for (int i = 0; i < items.length; i++) {
                 
@@ -44,7 +44,7 @@ public class App
             } else if (userInput.startsWith("delete")) {
                 String[] items = userInput.split(" ");
                 int deleteIndex = Integer.parseInt(items[1]) - 1;
-                System.out.println(shoppingCart.size());
+                //System.out.println(shoppingCart.size());
                 if (deleteIndex < 0 || deleteIndex >= shoppingCart.size()) {
                     System.out.println("Incorrect item index");
                 } else {
