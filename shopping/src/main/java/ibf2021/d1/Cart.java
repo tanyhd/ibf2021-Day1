@@ -42,4 +42,26 @@ public class Cart {
         }
     }
 
+    public List<String> listItemsInCart () {
+        return shoppingCart;
+    }
+
+    public void addWithoutPrint (String arguments) {
+        String[] items = arguments.trim().split(", ");
+
+                for (int i = 0; i < items.length; i++) {
+                
+                    if (this.shoppingCart.contains(items[i])) {
+                     
+                    } else {
+
+                        this.shoppingCart.add(items[i]);
+                    }
+                }
+    }
+
+    public void deleteItemsInCart() {
+        shoppingCart.clear();
+    }
+
 }
