@@ -1,62 +1,87 @@
 package ibf2021.d1;
 
+import java.io.BufferedReader;
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) throws IOException
     {
-        List<String> shoppingCart = new ArrayList<String>();
         System.out.println("Welcome to your shopping cart");
 
+        Cart cart = new Cart();
         boolean exit = false;
-        Console cons = System.console();
+        boolean loginStatus = false;
         
         while (!exit) {
            
-            String userInput = cons.readLine();
+            Scanner scanner = new Scanner(System.in);
+            String command = scanner.next();
+            String arguments = scanner.nextLine();
 
-            if (userInput.startsWith("list")) {
-                if (shoppingCart.size() <= 0) {
-                    System.out.println("Your cart is empty");
-                } else {
-                    for (int i = 0; i < shoppingCart.size(); i++) {
-                        System.out.println((i + 1) + ". " + shoppingCart.get(i));
-                    }
-                }
-            } else if (userInput.startsWith("add")) {
-                String str = userInput.substring(3, userInput.length());
-                String[] items = str.trim().split(", ");
-
-                for (int i = 0; i < items.length; i++) {
+            if (command.equals("list")) {
+                cart.list();
                 
-                    if (shoppingCart.contains(items[i])) {
-                        System.out.println("You have " + items[i] + " in your cart"); 
-                    } else {
-                        System.out.println(items[i] + " added to cart");
-                        shoppingCart.add(items[i]);
+            } else if (command.equals("add")) {
+                cart.add(arguments);
+
+            } else if (command.equals("delete")) {
+                cart.delete(arguments);
+
+            } else if (command.equals("exit")) {
+                exit = true;
+
+            } else if (command.equals("login")) {
+                File userFile = new File ("c:\\data\\" + arguments + ".txt");
+
+                if (!userFile.exists()) {
+                    System.out.println("User" + arguments + " does not exist, new user created");
+                    //File newFile = new File("c:\\data\\newFile.txt");
+                    try {
+                        userFile.createNewFile();
+                        loginStatus = true;
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                } else {
+                    System.out.println("Found user file");
+                    loginStatus = true;
+                    BufferedReader br = new BufferedReader(new FileReader(userFile));
+                    String st;
+        
+                    while ((st=br.readLine()) != null) {
+                        System.out.println(st);
                     }
                 }
-
-            } else if (userInput.startsWith("delete")) {
-                String[] items = userInput.split(" ");
-                int deleteIndex = Integer.parseInt(items[1]) - 1;
-                //System.out.println(shoppingCart.size());
-                if (deleteIndex < 0 || deleteIndex >= shoppingCart.size()) {
-                    System.out.println("Incorrect item index");
+        
+        
+            } else if (command.equals("save")) {
+                if (loginStatus == false) {
+                    System.out.println("login first");
                 } else {
-                    System.out.println(shoppingCart.get(deleteIndex) + " removed from cart");
-                    shoppingCart.remove(deleteIndex);
+                    try {
+                        FileWriter myWriter = new FileWriter("c:\\data\\newFile.txt");
+                        myWriter.write("Files in Java might be tricky, but it is fun enough!");
+                        myWriter.close();
+                        System.out.println("Successfully wrote to the file.");
+                      } catch (IOException e) {
+                        System.out.println("An error occurred.");
+                        e.printStackTrace();
+                      }
                 }
 
-            } else if (userInput.startsWith("exit")) {
-                exit = true;
-            } else if (!userInput.startsWith("add") || !userInput.startsWith("delete") || !userInput.startsWith("list") || !userInput.startsWith("exit")){
+            } else if (!command.equals("add") || !command.equals("delete") || !command.equals("list") || !command.equals("exit") || !command.equals("login") || !command.equals("save")) {
                 System.out.println("Incorrect command");
-            }
+            } 
         }
 
     }
