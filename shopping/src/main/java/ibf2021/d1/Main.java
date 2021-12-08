@@ -6,9 +6,15 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("Welcome to your shopping cart");
-
         Cart cart = new Cart();
         ShoppingCartDB shoppingCartDB = new ShoppingCartDB();
+        if (args.length == 0){
+            shoppingCartDB.setDefaultFileDirectory();
+            shoppingCartDB.checkDirectory();
+        } else {
+            shoppingCartDB.setFileDirectory(args[0]);
+            shoppingCartDB.checkDirectory();
+        }
         boolean exit = false;
         boolean loginStatus = false;
         String userName = "";

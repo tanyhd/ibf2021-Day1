@@ -11,13 +11,30 @@ import java.util.List;
 
 public class ShoppingCartDB {
 
+    private String fileDirectory;
+
+    public void checkDirectory () {
+        File directory = new File(fileDirectory);
+        if (! directory.exists()) {
+            directory.mkdir();
+        }
+    }
+
+    public void setDefaultFileDirectory() {
+        this.fileDirectory = "c:\\db";
+    }
+
+    public void setFileDirectory (String directory) {
+        this.fileDirectory = "c:\\" + directory;
+    }
+    
     public boolean save (boolean loginStatus, String userName, Cart cart) {
         if (loginStatus == false) {
             System.out.println("login first");
         } else {
             try {
                 // set FileWrite to false to overwrite file, set true to continue wrtiing into file
-                BufferedWriter writer = new BufferedWriter(new FileWriter("c:\\data\\" + userName + ".txt", false)); 
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fileDirectory + "\\" + userName + ".txt", false)); 
                 // for loop to loop through cart items and write to file
                 List<String> itemList = cart.listItemsInCart();
                 for (int i = 0; i < itemList.size(); i++) {
@@ -38,7 +55,7 @@ public class ShoppingCartDB {
 
     public void users () {
          //Creating a File object for directory
-         File directoryPath = new File("c:\\data");
+         File directoryPath = new File(fileDirectory);
          //List of all files in directories
          File filesList[] = directoryPath.listFiles();
          System.out.println("The following users are registered");
@@ -54,7 +71,7 @@ public class ShoppingCartDB {
     }
 
     public boolean login (String userName, boolean loginStatus, Cart cart) throws IOException {
-        File userFile = new File ("c:\\data\\" + userName + ".txt");
+        File userFile = new File (fileDirectory + "\\" + userName + ".txt");
         if (!userFile.exists()) {
             System.out.println(userName + " your cart is empty");
             try {
