@@ -16,8 +16,8 @@ public class ShoppingCartDB {
             System.out.println("login first");
         } else {
             try {
-                new FileWriter("c:\\data\\" + userName + ".txt", false).close();
-                BufferedWriter writer = new BufferedWriter(new FileWriter("c:\\data\\" + userName + ".txt", true));
+                // set FileWrite to false to overwrite file, set true to continue wrtiing into file
+                BufferedWriter writer = new BufferedWriter(new FileWriter("c:\\data\\" + userName + ".txt", false)); 
                 // for loop to loop through cart items and write to file
                 List<String> itemList = cart.listItemsInCart();
                 for (int i = 0; i < itemList.size(); i++) {
@@ -44,7 +44,12 @@ public class ShoppingCartDB {
          System.out.println("The following users are registered");
 
          for (int i = 0; i < filesList.length; i++) {
-             System.out.println((i + 1) + ". " + filesList[i].getName());
+             /* Get File name without extension using regular expression which remove
+             the last dot followed by one or more characters of the file extension
+             */
+             String fileName = filesList[i].getName();
+             String editedFileName = fileName.replaceFirst("[.][^.]+$", "");
+             System.out.println((i + 1) + ". " + editedFileName);
          }
     }
 
@@ -63,7 +68,7 @@ public class ShoppingCartDB {
             System.out.println(userName + ", your cart contains the following items");
             loginStatus = true;
             
-            // reading items in file and while loop to add into cart
+            // reading each items in file using while loop and add it into cart
             BufferedReader br = new BufferedReader(new FileReader(userFile));
             String itemsInFile;
             while ((itemsInFile = br.readLine()) != null) {
